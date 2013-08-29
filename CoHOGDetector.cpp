@@ -135,7 +135,11 @@ std::vector<Window> CoHOGDetector::detect(const cv::Mat_<unsigned char>& img)
         {
             const cv::Mat_<unsigned char> img_clipped = img.rowRange(y, y + h_window).colRange(x, x + w_window);
             const std::vector<float> feature = calculate_feature(img_clipped);
-            double score;
+
+            // caluclate the svm score of the feature
+            double score = 0;
+            for(int i = 0; i < feature.size(); ++i)
+                score += feature[i] * weights[i];
 
             Window w;
             w.x = x;
