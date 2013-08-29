@@ -17,8 +17,6 @@ namespace libcohog
 
 class HOGDetector: public Detector
 {
-    int w_window, h_window;
-
     HOGDescriptor descriptor;
 
 public:

@@ -7,7 +7,9 @@ std::vector<Window> Detector::detect_multi_scale(const cv::Mat_<unsigned char>& 
 {
     std::vector<Window> results;
 
-    for(float scale = param_scan.MinScale; scale <= param_scan.MaxScale; scale *= param_scan.ScaleFactor)
+    const float min_scale = 1.0 * h_window / param_scan.MaxHeight;
+    const float max_scale = 1.0 * h_window / param_scan.MinHeight;
+    for(float scale = min_scale; scale <= max_scale; scale *= param_scan.ScaleFactor)
     {
         const int w = static_cast<int>(img.cols / scale);
         const int h = static_cast<int>(img.rows / scale);

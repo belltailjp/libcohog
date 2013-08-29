@@ -33,6 +33,8 @@ protected:
 
 public:
 
+    int w_window, h_window;
+
     explicit Detector(const ScanParams& _param_scan)
         :param_scan(_param_scan)
     {

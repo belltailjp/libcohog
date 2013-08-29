@@ -77,21 +77,21 @@ struct CoHOGParams
  */
 struct ScanParams
 {
-    static const float    DefaultMinScale      = 2.0;
-    static const float    DefaultMaxScale      = 15.0;
-    static const float    DefaultScaleFactor   = 1.1;
+    static const int      DefaultMinHeight     = 90;
+    static const int      DefaultMaxHeight     = 300;
+    static const float    DefaultScaleFactor   = 1.2;
     static const unsigned DefaultSkipSizeX     = 2;
     static const unsigned DefaultSkipSizeY     = 4;
 
     /*!
-     * The minimum scale of multiple scale search
+     * The minimum height of multiple scale detection windows
      */
-    float MinScale;
+    int MinHeight;
 
     /*!
-     * The maximum scale of multiple scale search
+     * The maximum height of multiple scale detection windows
      */
-    float MaxScale;
+    int MaxHeight;
 
     /*!
      * The factor search of maginification scale beginning from BeginScale to EndScale for multiple scale
@@ -112,8 +112,8 @@ struct ScanParams
      * Construct an default parameters
      */
     ScanParams():
-        MinScale(DefaultMinScale),
-        MaxScale(DefaultMaxScale),
+        MinHeight(DefaultMinHeight),
+        MaxHeight(DefaultMaxHeight),
         ScaleFactor(DefaultScaleFactor),
         SkipSizeX(DefaultSkipSizeX),
         SkipSizeY(DefaultSkipSizeY)
