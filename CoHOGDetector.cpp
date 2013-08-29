@@ -90,5 +90,44 @@ std::vector<float> CoHOGDetector::calculate_feature(const cv::Mat_<unsigned char
     return data;
 }
 
+
+std::vector<Window> CoHOGDetector::detect(const cv::Mat_<unsigned char>& img)
+{
+    const int w = img.cols;
+    const int h = img.rows;
+    const int w_window = param_cohog.width();
+    const int h_window = param_cohog.height();
+
+    std::vector<Window> result;
+
+#ifdef WITH_OMP
+    #pragma omp parallel for
+#endif
+    for(int y = 0; y < h - h_window; y += param_scan.SkipSizeY)
+    {
+        for(int x = 0; x < w - w_window; x += param_scan.SkipSizeX)
+        {
+            const cv::Mat_<unsigned char> img_clipped = img.rowRange(y, y + h_window).colRange(x, x + w_window);
+            const std::vector<float> feature = calculate_feature(img_clipped);
+            double score;
+
+            Window w;
+            w.x = x;
+            w.y = y;
+            w.w = w_window;
+            w.h = h_window;
+            w.v = score;
+            #pragma omp critical
+            {
+                result.push_back(w);
+            }
+        }
+    }
+
+    std::sort(result.rbegin(), result.rend());
+
+    return result;
+}
+
 }
 

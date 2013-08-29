@@ -22,6 +22,7 @@ public:
     }
 
     std::vector<float> calculate_feature(const cv::Mat_<unsigned char>& img);
+    std::vector<Window> detect(const cv::Mat_<unsigned char>& img);
 };
 
 }
