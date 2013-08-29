@@ -1,7 +1,33 @@
 #include <libcohog/CoHOGDetector.hpp>
+#include <stdexcept>
 
 namespace libcohog
 {
+
+void CoHOGDetector::setDetector(const std::vector<double>& _weights)
+{
+    if(param_cohog.dimension() != _weights.size())
+        throw std::invalid_argument("The dimension of given weight vector is different from the dimension of CoHOG feature");
+
+    weights = _weights;
+}
+
+void CoHOGDetector::setDetector(model *liblinear_model)
+{
+    const int dim = liblinear_model->nr_feature;
+    std::vector<double> weights(dim, 0);
+    for(int idx = 0; idx < dim; ++idx)
+        weights[idx] = liblinear_model->w[idx];
+    setDetector(weights);
+}
+
+void CoHOGDetector::setDetector(const char* liblinear_model_file)
+{
+    model *m = load_model(liblinear_model_file);
+    setDetector(m);
+    free_and_destroy_model(&m);
+}
+
 
 int CoHOGDetector::quantitize_gradient(int level, float th, int dx, int dy) const
 {
