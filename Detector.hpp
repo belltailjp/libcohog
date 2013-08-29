@@ -3,6 +3,7 @@
 #include <vector>
 #include <opencv2/opencv.hpp>
 #include <libcohog/CoHOGParams.hpp>
+#include <boost/format.hpp>
 
 namespace libcohog
 {
@@ -10,11 +11,16 @@ namespace libcohog
 struct Window
 {
     int x, y, w, h;
-    float v;
+    double v;
 
     int operator<(const Window& t) const
     {
         return v < t.v;
+    }
+
+    std::string to_string() const
+    {
+        return (boost::format("%d %d %d %d %.6f") % x % y % w % h % v).str();
     }
 };
 
