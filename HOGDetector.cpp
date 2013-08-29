@@ -6,7 +6,7 @@ namespace libcohog
 HOGDetector::HOGDetector(const ScanParams& _param_scan)
     :Detector(_param_scan)
 {
-    //descriptor.setSVMDetector();
+    descriptor.setSVMDetector(descriptor.getDefaultPeopleDetector());
 
 #ifdef WITH_CUDA
     w_window = descriptor.win_size.width;
@@ -26,16 +26,11 @@ std::vector<Window> HOGDetector::detect(const cv::Mat_<unsigned char>& img)
     std::vector<double> confidences;
 
 #ifdef WITH_CUDA
-
     cv::gpu::GpuMat img_gpu;
     img_gpu.upload(img);
-
     descriptor.computeConfidence(img_gpu, found, 0, cv::Size(8,8), cv::Size(0,0), locations, confidences);
-
 #else
-
-    descriptor.detect(img, found, confidences, 0, cv::Size(8, 8), cv::Size(0, 0), locations);
-
+    descriptor.detect(img, locations, confidences, -DBL_MAX, cv::Size(8, 8), cv::Size(0, 0), found);
 #endif
 
     // convert to detection window description form
@@ -61,7 +56,6 @@ std::vector<float> HOGDetector::calculate_feature(const cv::Mat_<unsigned char>&
     std::vector<float> feature;
 
 #ifdef WITH_CUDA
-
     cv::gpu::GpuMat img_gpu;    // images uploaded to GPU
     cv::gpu::GpuMat desc_gpu;   // feature caluclated on GPU
     cv::Mat_<float> desc;       // feature downloaded from GPU
@@ -72,7 +66,6 @@ std::vector<float> HOGDetector::calculate_feature(const cv::Mat_<unsigned char>&
 
     for(int col = 0; col < desc.cols; ++col)
         feature.push_back(desc(0, col));
-
 #else
     descriptor.compute(img, feature);
 #endif
