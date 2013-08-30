@@ -22,32 +22,26 @@ model* train_liblinear(const std::vector<std::vector<float> >& positive_features
     prob.l = responses.size();  //学習データ数
     prob.bias = 0;
 
-    std::vector<std::vector<feature_node> > features_liblinear;
+    std::vector<std::vector<feature_node> > features_liblinear(responses.size());
     std::vector<feature_node*> features_ptr;
     for(int i = 0; i < responses.size(); ++i)
     {
-        const std::vector<float>& feature = features[i];
-
-        std::vector<feature_node> feature_nodes(dim + 1);
         for(int k = 0; k < dim; ++k)
-            feature_nodes[k] = feature_node{k + 1, feature[k]};
-        feature_nodes[dim] = feature_node{-1, 0};
-
-        features_liblinear.push_back(feature_nodes);
-        features_ptr.push_back(features_liblinear[features_liblinear.size() - 1].data());
+            features_liblinear[i].push_back(feature_node{k + 1, features[i][k]});
+        features_liblinear[i].push_back(feature_node{-1, 0});
+        features_ptr.push_back(features_liblinear[i].data());
     }
     prob.x = features_ptr.data();
 
+    //check looop
     {
         for(int i = 0; i < responses.size(); ++i)
         {
             for(int k = 0; k < dim; ++k)
             {
                 feature_node node = features_ptr[i][k];
-                if(node.index != k + 1)
-                    std::cout << "データ" << i << " indexが(" << k << " != " << node.index << ")" << std::endl;
-                if(node.value != features[i][k])
-                    std::cout << "valueが(" << features[i][k] << " != " << node.value << ")" << std::endl;
+                if(node.index != k + 1 || node.value != features[i][k])
+                    throw;
             }
         }
     }
