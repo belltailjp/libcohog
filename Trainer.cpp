@@ -3,7 +3,7 @@
 namespace libcohog
 {
 
-model* train_liblinear(const std::vector<std::vector<float> >& positive_features, const std::vector<std::vector<float> >& negative_features)
+model* train_liblinear(const std::vector<std::vector<float> >& positive_features, const std::vector<std::vector<float> >& negative_features, parameter param)
 {
     const int dim = positive_features[0].size();
 
@@ -53,8 +53,7 @@ model* train_liblinear(const std::vector<std::vector<float> >& positive_features
     }
 
     //liblinear学習
-    parameter par = default_liblinear_parameter();
-    model *m = train(&prob, &par);
+    model *m = train(&prob, &param);
 
     //識別テスト
     int cnt = 0;

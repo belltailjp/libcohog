@@ -6,7 +6,7 @@
 namespace libcohog
 {
 
-parameter default_liblinear_parameter()
+static parameter default_liblinear_parameter()
 {
     parameter par;
     par.solver_type  = L2R_L2LOSS_SVC_DUAL;
@@ -18,7 +18,7 @@ parameter default_liblinear_parameter()
     return par;
 }
 
-model* train_liblinear(const std::vector<std::vector<float> >& positive_features, const std::vector<std::vector<float> >& negative_features);
+model* train_liblinear(const std::vector<std::vector<float> >& positive_features, const std::vector<std::vector<float> >& negative_features, parameter param = default_liblinear_parameter());
 
 }
 
