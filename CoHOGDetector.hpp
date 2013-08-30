@@ -23,6 +23,8 @@ public:
          param_cohog(_param_cohog),
          weights(_param_cohog.dimension(), 0)
     {
+        w_window = param_cohog.width();
+        h_window = param_cohog.height();
     }
 
     void setDetector(const std::vector<double>& _weights);

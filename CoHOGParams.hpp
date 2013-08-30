@@ -79,7 +79,7 @@ struct ScanParams
 {
     static const int      DefaultMinHeight     = 90;
     static const int      DefaultMaxHeight     = 300;
-    static const float    DefaultScaleFactor   = 1.2;
+    static const float    DefaultScaleFactor   = 1.1;
     static const unsigned DefaultSkipSizeX     = 2;
     static const unsigned DefaultSkipSizeY     = 4;
 

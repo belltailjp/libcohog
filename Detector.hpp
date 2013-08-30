@@ -30,10 +30,9 @@ class Detector
 protected:
 
     ScanParams param_scan;
+    int w_window, h_window;
 
 public:
-
-    int w_window, h_window;
 
     explicit Detector(const ScanParams& _param_scan)
         :param_scan(_param_scan)
@@ -43,6 +42,10 @@ public:
     virtual std::vector<Window> detect(const cv::Mat_<unsigned char>& img) = 0;
     std::vector<Window> detect_multi_scale(const cv::Mat_<unsigned char>& img);
     virtual std::vector<float> calculate_feature(const cv::Mat_<unsigned char>& img) = 0;
+
+    int get_window_width()  const { return w_window; }
+    int get_window_height() const { return h_window; }
 };
 
 }
+
