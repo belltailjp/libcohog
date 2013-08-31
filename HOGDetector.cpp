@@ -1,4 +1,5 @@
 #include <libcohog/HOGDetector.hpp> 
+#include <stdexcept>
 
 namespace libcohog
 {
@@ -21,7 +22,7 @@ HOGDetector::HOGDetector(const ScanParams& _param_scan)
 void HOGDetector::setDetector(const std::vector<float>& _weights)
 {
     if(descriptor.getDescriptorSize() != _weights.size())
-        throw std::invalid_argument("The dimension of given weight vector is different from the dimension of CoHOG feature");
+        throw std::invalid_argument("The dimension of given weight vector is different from the dimension of HOG feature");
 
     descriptor.setSVMDetector(_weights);
 }
