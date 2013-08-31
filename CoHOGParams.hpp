@@ -7,17 +7,17 @@ static const int offsets_x[] = {0, 1, 2, 3, 4, -4, -3, -2, -1, 0, 1, 2, 3, 4, -3
 static const int offsets_y[] = {0, 0, 0, 0, 0,  1,  1,  1,  1, 1, 1, 1, 1, 1,  2,  2,  2, 2, 2, 2, 2,  3,  3,  3, 3, 3, 3, 3,  4, 4, 4};
 static const int n_offset    = sizeof(offsets_x) / sizeof(int);
 
+static const unsigned DefaultBinCount      = 8;
+static const unsigned DefaultBlockSize     = 6;
+static const float    DefaultMinGradient   = 10.0f;
+static const unsigned DefaultBlockCountX   = 3;
+static const unsigned DefaultBlockCountY   = 6;
+
 /*!
  * Describes the parameters of CoHOG feature extraction.
  */
 struct CoHOGParams
 {
-    static const unsigned DefaultBinCount      = 8;
-    static const unsigned DefaultBlockSize     = 6;
-    static const float    DefaultMinGradient   = 10;
-    static const unsigned DefaultBlockCountX   = 3;
-    static const unsigned DefaultBlockCountY   = 6;
-
     /*!
      * The number of quantization level of orientation.
      */
@@ -72,17 +72,17 @@ struct CoHOGParams
 };
 
 
+static const int      DefaultMinHeight     = 90;
+static const int      DefaultMaxHeight     = 300;
+static const float    DefaultScaleFactor   = 1.1f;
+static const unsigned DefaultSkipSizeX     = 2;
+static const unsigned DefaultSkipSizeY     = 4;
+
 /*!
  * Describes the parameters of detection window search
  */
 struct ScanParams
 {
-    static const int      DefaultMinHeight     = 90;
-    static const int      DefaultMaxHeight     = 300;
-    static const float    DefaultScaleFactor   = 1.1;
-    static const unsigned DefaultSkipSizeX     = 2;
-    static const unsigned DefaultSkipSizeY     = 4;
-
     /*!
      * The minimum height of multiple scale detection windows
      */
