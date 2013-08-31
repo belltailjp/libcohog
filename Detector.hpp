@@ -1,9 +1,9 @@
 #pragma once
 
+#include <cstdio>
 #include <vector>
 #include <opencv2/opencv.hpp>
 #include <libcohog/CoHOGParams.hpp>
-#include <boost/format.hpp>
 
 namespace libcohog
 {
@@ -20,7 +20,9 @@ struct Window
 
     std::string to_string() const
     {
-        return (boost::format("%d %d %d %d %.6f") % x % y % w % h % v).str();
+        char buf[64];
+        std::sprintf(buf, "%d %d %d %d %.6f", x, y, w, h, v);
+        return std::string(buf);
     }
 };
 
