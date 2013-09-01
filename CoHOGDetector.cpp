@@ -147,7 +147,9 @@ std::vector<Window> CoHOGDetector::detect(const cv::Mat_<unsigned char>& img)
             w.w = w_window;
             w.h = h_window;
             w.v = score;
+#ifdef WITH_OMP
             #pragma omp critical
+#endif
             {
                 result.push_back(w);
             }
