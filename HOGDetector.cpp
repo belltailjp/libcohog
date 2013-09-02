@@ -29,7 +29,7 @@ void HOGDetector::set_detector(const std::vector<float>& _weights)
 
 void HOGDetector::set_detector(model *liblinear_model)
 {
-    const int dim = liblinear_model->nr_feature;
+    const int dim = liblinear_model->nr_feature + 1;
     std::vector<float> weights(dim, 0);
     for(int idx = 0; idx < dim; ++idx)
         weights[idx] = liblinear_model->w[idx];
