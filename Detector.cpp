@@ -23,10 +23,10 @@ std::vector<Window> Detector::detect_multi_scale(const cv::Mat_<unsigned char>& 
         for(int i = 0; i < result.size(); ++i)
         {
             Window r = result[i];
-            r.x *= scale;
-            r.y *= scale;
-            r.w *= scale;
-            r.h *= scale;
+            r.x /= scale;
+            r.y /= scale;
+            r.w /= scale;
+            r.h /= scale;
             results.push_back(r);
         }
     }
