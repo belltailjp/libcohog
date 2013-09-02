@@ -24,9 +24,9 @@ public:
 
     HOGDetector(const ScanParams& _param_scan = ScanParams());
 
-    void setDetector(const std::vector<float>& _weights);
-    void setDetector(model *liblinear_model);
-    void setDetector(const char* liblinear_model_file);
+    void set_detector(const std::vector<float>& _weights);
+    void set_detector(model *liblinear_model);
+    void set_detector(const char* liblinear_model_file);
 
     std::vector<Window> detect(const cv::Mat_<unsigned char>& img);
     std::vector<float> calculate_feature(const cv::Mat_<unsigned char>& img);

@@ -19,7 +19,7 @@ HOGDetector::HOGDetector(const ScanParams& _param_scan)
 
 }
 
-void HOGDetector::setDetector(const std::vector<float>& _weights)
+void HOGDetector::set_detector(const std::vector<float>& _weights)
 {
     if(descriptor.getDescriptorSize() != _weights.size())
         throw std::invalid_argument("The dimension of given weight vector is different from the dimension of HOG feature");
@@ -27,19 +27,19 @@ void HOGDetector::setDetector(const std::vector<float>& _weights)
     descriptor.setSVMDetector(_weights);
 }
 
-void HOGDetector::setDetector(model *liblinear_model)
+void HOGDetector::set_detector(model *liblinear_model)
 {
     const int dim = liblinear_model->nr_feature;
     std::vector<float> weights(dim, 0);
     for(int idx = 0; idx < dim; ++idx)
         weights[idx] = liblinear_model->w[idx];
-    setDetector(weights);
+    set_detector(weights);
 }
 
-void HOGDetector::setDetector(const char* liblinear_model_file)
+void HOGDetector::set_detector(const char* liblinear_model_file)
 {
     model *m = load_model(liblinear_model_file);
-    setDetector(m);
+    set_detector(m);
     free_and_destroy_model(&m);
 }
 
