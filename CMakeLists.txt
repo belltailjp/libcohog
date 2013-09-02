@@ -4,8 +4,16 @@ project(libcohog)
 include_directories("${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/..")
 
 #options
-option(WITH_CUDA    "Build with CUDA"   ON)
-option(WITH_OMP     "Build with OpenMP" ON)
+option(WITH_CUDA    "Build with CUDA"       ON)
+option(WITH_OMP     "Build with OpenMP"     ON)
+option(DEBUG        "Build as Debug mode"   OFF)
+
+#DEBUG
+if(DEBUG)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -pg -DDEBUG")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
+endif()
 
 #GoogleTest
 add_subdirectory(gtest)
@@ -13,7 +21,7 @@ add_subdirectory(gtest)
 #OpenMP
 if(WITH_OMP)
     add_definitions(-DWITH_OMP)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -fopenmp")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 endif()
 
 #CUDA
