@@ -13,7 +13,7 @@ std::vector<Window> Detector::detect_multi_scale(const cv::Mat_<unsigned char>& 
     {
         const int w = static_cast<int>(img.cols * scale);
         const int h = static_cast<int>(img.rows * scale);
-        if(h <= h_window * scale)
+        if(h <= h_window)
             break;
 
         cv::Mat_<unsigned char> img_scaled;
