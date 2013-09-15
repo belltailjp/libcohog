@@ -6,4 +6,5 @@
 #include <libcohog/HOGDetector.hpp>
 #include <libcohog/Trainer.hpp>
 #include <libcohog/Verifier.hpp>
+#include <libcohog/GroundTruthLoader.hpp>
 
