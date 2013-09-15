@@ -2,6 +2,8 @@
 #include <fstream>
 #include <boost/filesystem.hpp>
 #include <libcohog.hpp>
+#include <tinyxml2.h>
+#include <boost/lexical_cast.hpp>
 
 #include "GroundTruthLoader.hpp"
 
@@ -56,16 +58,62 @@ std::map<std::string, std::vector<libcohog::TruthRect> > libcohog::load_daimler_
             rect.rect.width  -= rect.rect.x;
             rect.rect.height -= rect.rect.y;
 
-            if(rect.rect.height < min_h || (only_confident && confidence < 1.0))
+            if(rect.rect.height < min_h || (only_confident && confidence < 1.0) || categ != 0)
                 rect.confident = false;
             else
                 rect.confident = true;
-
-            if(categ == 0)
-                rects.push_back(rect);
+            rects.push_back(rect);
         }
         result[img_name] = rects;
     }
     return result;
 }
 
+std::map<std::string, std::vector<libcohog::TruthRect> > libcohog::load_rectan_ground_truth(const char *filename, int min_h, const std::set<int>& category)
+{
+    using namespace tinyxml2;
+
+    std::map<std::string, std::vector<libcohog::TruthRect> > result;
+
+    XMLDocument xml;
+    xml.LoadFile(filename);
+
+    XMLElement* images = xml.FirstChildElement("images");
+    const std::string path = images->Attribute("path");
+
+    //画像ごとに回す
+    for(XMLElement* img = images->FirstChildElement("image");
+        img;
+        img = img->NextSiblingElement("image"))
+    {
+        std::vector<libcohog::TruthRect> rects;
+
+        //属性読み取り
+        std::string src  = img->Attribute("src");
+
+        const std::string img_name = boost::filesystem::path(path).filename().string();
+
+        //子要素(rect)があれば
+        for(XMLElement* rct = img->FirstChildElement("rect");
+            rct;
+            rct = rct->NextSiblingElement("rect"))
+        {
+            int categ;
+            libcohog::TruthRect rect;
+            rect.rect.x      = boost::lexical_cast<int>(rct->Attribute("x"));
+            rect.rect.y      = boost::lexical_cast<int>(rct->Attribute("y"));
+            rect.rect.width  = boost::lexical_cast<int>(rct->Attribute("w"));
+            rect.rect.height = boost::lexical_cast<int>(rct->Attribute("h"));
+            categ            = boost::lexical_cast<int>(rct->Attribute("category"));
+
+            if(rect.rect.height <= min_h || category.find(categ) == category.end())
+                rect.confident = false;
+
+            rects.push_back(rect);
+        }
+
+        result[img_name] = rects;
+    }
+
+    return result;
+}
