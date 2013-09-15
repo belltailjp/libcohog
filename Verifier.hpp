@@ -26,6 +26,10 @@ struct EvaluationResult
     int nWnd;
     int nImg;
 
+    EvaluationResult()
+        :nTP(0), nFP(0), nFN(0), nFPW(0), nWnd(0), nImg(0)
+    { }
+
     EvaluationResult operator+(EvaluationResult eval) const
     {
         eval.nTP  += nTP;
