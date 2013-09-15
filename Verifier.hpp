@@ -65,10 +65,10 @@ std::vector<cv::Rect>   grouping(const std::vector<cv::Rect>& rects, int groupTh
 cv::Rect                normalize_rectangle(const cv::Rect& r, double height_to_width_ratio, double height_ratio);
 bool                    is_equivalent(const cv::Rect& r1, const cv::Rect& r2, double overwrap_th);
 
-VerificationResult      verify(const std::vector<Window>& windows, const std::vector<TruthRect>& normalized_truth, 
-                            double threshold, double overwrap_th, int groupTh, double eps);
+VerificationResult      verify(const DetectionResult& detection, const std::vector<TruthRect>& normalized_truth, 
+                                    double threshold, double overwrap_th, int groupTh, double eps);
 
-EvaluationResult        evaluate(const std::vector<Window>& windows, const std::vector<TruthRect>& normalized_truth, 
+EvaluationResult        evaluate(const DetectionResult& detection, const std::vector<TruthRect>& normalized_truth, 
                             double threshold, double overwrap_th, int groupTh, double eps);
 }
 

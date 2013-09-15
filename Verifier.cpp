@@ -62,17 +62,17 @@ bool libcohog::is_equivalent(const cv::Rect& r1, const cv::Rect& r2, double over
     return overwrap_th <= 1.0 * and_area / or_area;
 }
 
-libcohog::VerificationResult libcohog::verify(const std::vector<libcohog::Window>& windows, const std::vector<libcohog::TruthRect>& normalized_truth, 
+libcohog::VerificationResult libcohog::verify(const libcohog::DetectionResult& detection, const std::vector<libcohog::TruthRect>& normalized_truth, 
                                     double threshold, double overwrap_th, int groupTh, double eps)
 {
     libcohog::VerificationResult result;
 
-    result.total_windows    = windows.size();
-    result.windows          = libcohog::thresholding(windows, threshold);
+    result.total_windows    = detection.window_cnt;
+    result.windows          = libcohog::thresholding(detection.windows, threshold);
     result.windows_grouped  = libcohog::grouping(result.windows, groupTh, eps);
     result.ground_truth     = normalized_truth;
 
-    result.TP_flags         = std::vector<bool>(result.total_windows,           false);
+    result.TP_flags         = std::vector<bool>(result.windows.size(),          false);
     result.TP_grouped_flags = std::vector<bool>(result.windows_grouped.size(),  false);
     result.found_flags      = std::vector<bool>(result.ground_truth.size(),     false);
 
@@ -112,10 +112,10 @@ libcohog::VerificationResult libcohog::verify(const std::vector<libcohog::Window
     return result;
 }
 
-libcohog::EvaluationResult libcohog::evaluate(const std::vector<libcohog::Window>& windows, const std::vector<libcohog::TruthRect>& normalized_truth, 
+libcohog::EvaluationResult libcohog::evaluate(const libcohog::DetectionResult& detection, const std::vector<libcohog::TruthRect>& normalized_truth, 
                                             double threshold, double overwrap_th, int groupTh, double eps)
 {
-    const VerificationResult result = libcohog::verify(windows, normalized_truth, threshold, overwrap_th, groupTh, eps);
+    const VerificationResult result = libcohog::verify(detection, normalized_truth, threshold, overwrap_th, groupTh, eps);
     return result.to_eval();
 }
 

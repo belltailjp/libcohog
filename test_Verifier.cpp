@@ -66,13 +66,14 @@ TEST(verifier_test, test_equivalent)
 
 TEST(verifier_test, simple_verify_test)
 {
-    std::vector<libcohog::Window> windows;
-    windows += libcohog::Window{100, 100, 100, 200, 1.0};
+    libcohog::DetectionResult detection;
+    detection.window_cnt = 1;
+    detection.windows += libcohog::Window{100, 100, 100, 200, 1.0};
 
     std::vector<libcohog::TruthRect> truth;
     truth += libcohog::TruthRect{cv::Rect(100, 100, 100, 200), true};
 
-    const libcohog::VerificationResult result = libcohog::verify(windows, truth, 0, 0.5, 0, 0); //eps=0なのでグルーピングはしない
+    const libcohog::VerificationResult result = libcohog::verify(detection, truth, 0, 0.5, 0, 0); //eps=0なのでグルーピングはしない
     
     EXPECT_EQ(result.windows_grouped.size(), 1);
     EXPECT_EQ(result.TP_flags.size(), 1);
@@ -89,14 +90,15 @@ TEST(verifier_test, simple_verify_test)
 
 TEST(verifier_test, found_2_tp_windows)
 {
-    std::vector<libcohog::Window> windows;
-    windows += libcohog::Window{100, 100, 100, 200, 1.0};
-    windows += libcohog::Window{100, 110, 100, 200, 1.0};   //少しずれた位置にあるTP
+    libcohog::DetectionResult detection;
+    detection.window_cnt = 2;
+    detection.windows += libcohog::Window{100, 100, 100, 200, 1.0};
+    detection.windows += libcohog::Window{100, 110, 100, 200, 1.0};   //少しずれた位置にあるTP
 
     std::vector<libcohog::TruthRect> truth;
     truth += libcohog::TruthRect{cv::Rect(100, 100, 100, 200), true};
 
-    const libcohog::VerificationResult result = libcohog::verify(windows, truth, 0, 0.5, 0, 0); //eps=0なのでグルーピングはしない
+    const libcohog::VerificationResult result = libcohog::verify(detection, truth, 0, 0.5, 0, 0); //eps=0なのでグルーピングはしない
     
     EXPECT_EQ(result.windows_grouped.size(), 2);
     EXPECT_EQ(result.TP_flags.size(), 2);
@@ -120,12 +122,13 @@ TEST(verifier_test, found_2_tp_windows)
 
 TEST(verifier_test, notconfident_fn)
 {
-    std::vector<libcohog::Window> windows;  //空っぽ
+    libcohog::DetectionResult detection;
+    detection.window_cnt = 0; //空っぽ
 
     std::vector<libcohog::TruthRect> truth;
     truth += libcohog::TruthRect{cv::Rect(100, 100, 100, 200), false};
 
-    const libcohog::EvaluationResult eval = libcohog::evaluate(windows, truth, 0, 0.5, 0, 0); //eps=0なのでグルーピングはしない
+    const libcohog::EvaluationResult eval = libcohog::evaluate(detection, truth, 0, 0.5, 0, 0); //eps=0なのでグルーピングはしない
     EXPECT_EQ(eval.nFN, 0);
 }
 
