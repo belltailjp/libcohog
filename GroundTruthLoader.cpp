@@ -89,9 +89,8 @@ std::map<std::string, std::vector<libcohog::TruthRect> > libcohog::load_rectan_g
         std::vector<libcohog::TruthRect> rects;
 
         //属性読み取り
-        std::string src  = img->Attribute("src");
-
-        const std::string img_name = boost::filesystem::path(path).filename().string();
+        const std::string src  = img->Attribute("src");
+        const std::string img_name = boost::filesystem::path(src).filename().string();
 
         //子要素(rect)があれば
         for(XMLElement* rct = img->FirstChildElement("rect");
@@ -117,3 +116,4 @@ std::map<std::string, std::vector<libcohog::TruthRect> > libcohog::load_rectan_g
 
     return result;
 }
+
