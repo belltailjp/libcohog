@@ -1,7 +1,7 @@
 #pragma once
 
 #include <opencv2/opencv.hpp>
-#include <linear.h>
+#include <libcohog/linear.h>
 
 namespace libcohog
 {
