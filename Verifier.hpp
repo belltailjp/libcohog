@@ -30,16 +30,14 @@ struct EvaluationResult
         :nTP(0), nFP(0), nFN(0), nFPW(0), nWnd(0), nImg(0)
     { }
 
-    EvaluationResult operator+(EvaluationResult eval) const
-    {
-        eval.nTP  += nTP;
-        eval.nFP  += nFP;
-        eval.nFN  += nFN;
-        eval.nFPW += nFPW;
-        eval.nWnd += nWnd;
-        eval.nImg += nImg;
-        return eval;
-    }
+    EvaluationResult operator+(const EvaluationResult& eval) const;
+    EvaluationResult& operator+=(const EvaluationResult& eval);
+    std::string to_string(bool one_line = true) const;
+    double F_value() const;
+    double FPPF() const;
+    double FPPW() const;
+    double Recall() const;
+    double Precision() const;
 };
 
 

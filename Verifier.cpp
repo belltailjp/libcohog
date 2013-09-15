@@ -1,5 +1,6 @@
 #include "libcohog.hpp"
 
+#include <cstring>
 
 libcohog::EvaluationResult libcohog::VerificationResult::to_eval() const
 {
@@ -18,6 +19,67 @@ libcohog::EvaluationResult libcohog::VerificationResult::to_eval() const
 
     return t;
 }
+
+libcohog::EvaluationResult libcohog::EvaluationResult::operator+(const libcohog::EvaluationResult& eval) const
+{
+    libcohog::EvaluationResult t = eval;
+    return t += *this;
+}
+
+libcohog::EvaluationResult& libcohog::EvaluationResult::operator+=(const libcohog::EvaluationResult& eval)
+{
+    nTP  +=  eval.nTP;
+    nFP  +=  eval.nFP;
+    nFN  +=  eval.nFN;
+    nFPW +=  eval.nFPW;
+    nWnd +=  eval.nWnd;
+    nImg +=  eval.nImg;
+    return *this;
+}
+
+std::string libcohog::EvaluationResult::to_string(bool one_line) const
+{
+    char buf[64];
+    if(one_line)
+        std::sprintf(buf, "Prec=%.6f, Rec=%.6f, F-val=%.6f", Precision(), Recall(), F_value());
+    else
+        std::sprintf(buf, "TPs:  %d\n"
+                          "FPs:  %d\n"
+                          "FNs:  %d\n"
+                          "FPWs: %d\n"
+                          "nWnd: %d\n"
+                          "nImg: %d\n", nTP, nFP, nFN, nFPW, nWnd, nImg);
+    return std::string(buf);
+}
+
+double libcohog::EvaluationResult::F_value() const
+{
+    const double prc = Precision();
+    const double rec = Recall();
+
+    return 2 * prc * rec / (rec + prc);
+}
+
+double libcohog::EvaluationResult::FPPF() const
+{
+    return 1.0 * nFP / nImg;
+}
+
+double libcohog::EvaluationResult::FPPW() const
+{
+    return 1.0 * nFPW / nWnd;
+}
+
+double libcohog::EvaluationResult::Recall() const
+{
+    return 1.0 * nTP / (nTP + nFN);
+}
+
+double libcohog::EvaluationResult::Precision() const
+{
+    return 1.0 * nTP / (nTP + nFP);
+}
+
 
 std::vector<cv::Rect> libcohog::thresholding(const std::vector<libcohog::Window>& windows, double th)
 {
