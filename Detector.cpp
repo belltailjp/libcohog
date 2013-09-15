@@ -49,4 +49,35 @@ void write_detection_windows(std::ostream& os, const DetectionResult& result, fl
         os << result.windows[j].to_string() << std::endl;
 }
 
+
+std::vector<DetectionResult> load_detection_windows(const char* filename)
+{
+    std::vector<DetectionResult> results;
+
+    std::ifstream ifs(filename);
+    if(!ifs.is_open())
+        return results;
+
+    int cnt;
+    ifs >> cnt;
+
+    for(int i = 0; i < cnt; ++i)
+    {
+        int data_cnt;
+
+        DetectionResult result;
+        ifs >> result.filename >> data_cnt >> result.window_cnt;
+
+        for(int j = 0; j < data_cnt; ++j)
+        {
+            libcohog::Window r;
+            ifs >> r.x >> r.y >> r.w >> r.h >> r.v;
+            result.windows.push_back(r);
+        }
+
+        results.push_back(result);
+    }
+    return results;
+}
+
 }

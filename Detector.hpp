@@ -35,6 +35,7 @@ struct DetectionResult
 };
 
 void                         write_detection_windows(std::ostream& os,     const DetectionResult& result, float omit_rate = 0.95);
+std::vector<DetectionResult> load_detection_windows(const char* filename);
 
 class Detector
 {
