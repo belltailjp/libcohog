@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(libcohog)
 
-include_directories("${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/.." "${PROJECT_SOURCE_DIR}/liblinear")
+include_directories("${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/..")
 
 #options
 option(WITH_CUDA    "Build with CUDA"       ON)
@@ -46,6 +46,12 @@ if(WITH_CUDA)
 else()
     add_library(cohog ${SOURCES})
 endif()
+
+#DEMO
+add_executable(demo Demo.cpp)
+target_link_libraries(demo cohog)
+target_link_libraries(demo glog)
+target_link_libraries(demo opencv_core opencv_highgui opencv_imgproc opencv_objdetect opencv_gpu)
 
 
 #Test
