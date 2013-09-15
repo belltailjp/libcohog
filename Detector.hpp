@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <cstdio>
 #include <vector>
 #include <opencv2/opencv.hpp>
@@ -26,6 +27,14 @@ struct Window
     }
 };
 
+struct DetectionResult
+{
+    std::string filename;
+    int window_cnt;
+    std::vector<Window> windows;
+};
+
+void                         write_detection_windows(std::ostream& os,     const DetectionResult& result, float omit_rate = 0.95);
 
 class Detector
 {

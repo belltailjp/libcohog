@@ -1,5 +1,8 @@
 #include "Detector.hpp"
 
+#include <fstream>
+#include <stdexcept>
+
 namespace libcohog
 {
     
@@ -34,6 +37,16 @@ std::vector<Window> Detector::detect_multi_scale(const cv::Mat_<unsigned char>& 
     std::sort(results.rbegin(), results.rend());  //sort by detection score descending
 
     return results;
+}
+
+
+void write_detection_windows(std::ostream& os, const DetectionResult& result, float omit_rate)
+{
+    const int data_cnt = static_cast<int>(result.windows.size() * omit_rate);
+    os << result.filename << " " << data_cnt << " " << result.windows.size() << std::endl;
+
+    for(int j = 0; j < data_cnt; ++j)
+        os << result.windows[j].to_string() << std::endl;
 }
 
 }
