@@ -5,7 +5,7 @@
 
 #include "GroundTruthLoader.hpp"
 
-static std::string filepath_to_filename(const std::string& filepath)
+std::string libcohog::filepath_to_filename(const std::string& filepath)
 {
     int p;
     if((p = filepath.find_last_of("/")) != std::string::npos || (p = filepath.find_last_of("\\")) != std::string::npos)
