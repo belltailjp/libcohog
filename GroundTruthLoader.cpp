@@ -1,11 +1,18 @@
 #include <iostream>
 #include <fstream>
-#include <boost/filesystem.hpp>
 #include <libcohog.hpp>
 #include <tinyxml2.h>
-#include <boost/lexical_cast.hpp>
 
 #include "GroundTruthLoader.hpp"
+
+static std::string filepath_to_filename(const std::string& filepath)
+{
+    int p;
+    if((p = filepath.find_last_of("/")) != std::string::npos || (p = filepath.find_last_of("\\")) != std::string::npos)
+        return filepath.substr(p + 1);
+    
+    return filepath;
+}
 
 std::map<std::string, std::vector<libcohog::TruthRect> > libcohog::load_daimler_ground_truth(const char* filename, int min_h, bool only_confident)
 {
@@ -90,7 +97,7 @@ std::map<std::string, std::vector<libcohog::TruthRect> > libcohog::load_rectan_g
 
         //属性読み取り
         const std::string src  = img->Attribute("src");
-        const std::string img_name = boost::filesystem::path(src).filename().string();
+        const std::string img_name = filepath_to_filename(src); //boost::filesystem::path(src).filename().string();
 
         //子要素(rect)があれば
         for(XMLElement* rct = img->FirstChildElement("rect");
@@ -99,11 +106,11 @@ std::map<std::string, std::vector<libcohog::TruthRect> > libcohog::load_rectan_g
         {
             int categ;
             libcohog::TruthRect rect;
-            rect.rect.x      = boost::lexical_cast<int>(rct->Attribute("x"));
-            rect.rect.y      = boost::lexical_cast<int>(rct->Attribute("y"));
-            rect.rect.width  = boost::lexical_cast<int>(rct->Attribute("w"));
-            rect.rect.height = boost::lexical_cast<int>(rct->Attribute("h"));
-            categ            = boost::lexical_cast<int>(rct->Attribute("category"));
+            rect.rect.x      = std::atoi(rct->Attribute("x"));
+            rect.rect.y      = std::atoi(rct->Attribute("y"));
+            rect.rect.width  = std::atoi(rct->Attribute("w"));
+            rect.rect.height = std::atoi(rct->Attribute("h"));
+            categ            = std::atoi(rct->Attribute("category"));
 
             if(rect.rect.height <= min_h || category.find(categ) == category.end())
                 rect.confident = false;
