@@ -64,5 +64,5 @@ target_link_libraries(libcohog_test opencv_core opencv_highgui opencv_imgproc op
 #Install
 INSTALL(TARGETS cohog DESTINATION lib)
 INSTALL(FILES ${HEADERS_SUB} DESTINATION include/libcohog)
-INSTALL(FILES ${HEADES} DESTINATION include)
+INSTALL(FILES ${HEADERS} DESTINATION include)
 
