@@ -11,7 +11,7 @@ option(DEBUG        "Build as Debug mode"   OFF)
 #HEADERS
 set(HEADERS ${HEADERS} libcohog.hpp)
 set(HEADERS_SUB ${HEADERS_SUB} CoHOGParams.hpp Detector.hpp HOGDetector.hpp CoHOGDetector.hpp Trainer.hpp Verifier.hpp GroundTruthLoader.hpp)
-set(HEADERS_SUB ${HEADERS_SUB} liblinear/linear.h)
+set(HEADERS_LIBLINEAR ${HEADERS_LIBLINEAR} liblinear/linear.h)
 
 #SOURCES
 set(SOURCES ${SOURCES} Detector.cpp HOGDetector.cpp CoHOGDetector.cpp Trainer.cpp Verifier.cpp GroundTruthLoader.cpp)
@@ -50,7 +50,6 @@ endif()
 #DEMO
 add_executable(demo Demo.cpp)
 target_link_libraries(demo cohog)
-target_link_libraries(demo glog)
 target_link_libraries(demo opencv_core opencv_highgui opencv_imgproc opencv_objdetect opencv_gpu)
 
 
@@ -64,5 +63,6 @@ target_link_libraries(libcohog_test opencv_core opencv_highgui opencv_imgproc op
 #Install
 INSTALL(TARGETS cohog DESTINATION lib)
 INSTALL(FILES ${HEADERS_SUB} DESTINATION include/libcohog)
+INSTALL(FILES ${HEADERS_LIBLINEAR} DESTINATION include/libcohog/liblinear)
 INSTALL(FILES ${HEADERS} DESTINATION include)
 
