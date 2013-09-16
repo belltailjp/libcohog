@@ -17,6 +17,7 @@ HOGDetector::HOGDetector(const ScanParams& _param_scan)
     h_window = descriptor.winSize.height;
 #endif
 
+    dim     = descriptor.getDescriptorSize();
 }
 
 void HOGDetector::set_detector(const std::vector<float>& _weights)

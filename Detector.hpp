@@ -44,6 +44,7 @@ protected:
 
     ScanParams param_scan;
     int w_window, h_window;
+    int dim;
 
 public:
 
@@ -59,6 +60,7 @@ public:
 
     int get_window_width()  const { return w_window; }
     int get_window_height() const { return h_window; }
+    int get_dimension()     const { return dim; }
 };
 
 }
