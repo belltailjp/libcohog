@@ -39,7 +39,7 @@ libcohog::EvaluationResult& libcohog::EvaluationResult::operator+=(const libcoho
 
 std::string libcohog::EvaluationResult::to_string(bool one_line) const
 {
-    char buf[64];
+    char buf[256];
     if(one_line)
         std::sprintf(buf, "Prec=%.6f, Rec=%.6f, F-val=%.6f", Precision(), Recall(), F_value());
     else
@@ -48,7 +48,11 @@ std::string libcohog::EvaluationResult::to_string(bool one_line) const
                           "FNs:  %d\n"
                           "FPWs: %d\n"
                           "nWnd: %d\n"
-                          "nImg: %d\n", nTP, nFP, nFN, nFPW, nWnd, nImg);
+                          "nImg: %d\n"
+                          "Precision = %f\n"
+                          "Recall    = %f\n"
+                          "F-value   = %f\n"
+                          "FPPW      = %f\n", nTP, nFP, nFN, nFPW, nWnd, nImg, Precision(), Recall(), F_value(), FPPW());
     return std::string(buf);
 }
 

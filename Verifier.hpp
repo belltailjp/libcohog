@@ -23,8 +23,8 @@ struct EvaluationResult
     int nFPW;
 
     // The total number of detection windows, and frames.
-    int nWnd;
-    int nImg;
+    long long int nWnd;
+    int           nImg;
 
     EvaluationResult()
         :nTP(0), nFP(0), nFN(0), nFPW(0), nWnd(0), nImg(0)
