@@ -5,6 +5,7 @@
 #include <vector>
 #include <opencv2/opencv.hpp>
 #include <libcohog/CoHOGParams.hpp>
+#include <libcohog/liblinear/linear.h>
 
 namespace libcohog
 {
@@ -54,6 +55,7 @@ public:
     virtual std::vector<Window> detect(const cv::Mat_<unsigned char>& img) = 0;
     std::vector<Window> detect_multi_scale(const cv::Mat_<unsigned char>& img);
     virtual std::vector<float> calculate_feature(const cv::Mat_<unsigned char>& img) = 0;
+    std::vector<feature_node> calculate_feature_nodes(const cv::Mat_<unsigned char>& img);
 
     int get_window_width()  const { return w_window; }
     int get_window_height() const { return h_window; }

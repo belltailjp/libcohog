@@ -39,6 +39,19 @@ std::vector<Window> Detector::detect_multi_scale(const cv::Mat_<unsigned char>& 
     return results;
 }
 
+std::vector<feature_node> Detector::calculate_feature_nodes(const cv::Mat_<unsigned char>& img)
+{
+    const std::vector<float> features = calculate_feature(img);
+
+    std::vector<feature_node> feature_nodes;
+    for(int i = 0; i < features.size(); ++i)
+        if(features[i] != 0.0)
+            feature_nodes.push_back(feature_node{.index = i + 1, .value = features[i]});
+    feature_nodes.push_back(feature_node{.index = -1, .value = 0});
+    return feature_nodes;
+}
+
+
 
 void write_detection_windows(std::ostream& os, const DetectionResult& result, float omit_rate)
 {
