@@ -90,6 +90,16 @@ double libcohog::EvaluationResult::Precision() const
     return 1.0 * nTP / (nTP + nFP);
 }
 
+double libcohog::EvaluationResult::Missrate() const
+{
+    return 1.0 - Recall();
+}
+
+double libcohog::EvaluationResult::FP_rate() const
+{
+    return 1.0 - Precision();
+}
+
 
 std::vector<cv::Rect> libcohog::thresholding(const std::vector<libcohog::Window>& windows, double th)
 {

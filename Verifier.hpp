@@ -38,6 +38,8 @@ struct EvaluationResult
     double FPPW() const;
     double Recall() const;
     double Precision() const;
+    double Missrate() const;
+    double FP_rate() const;
 };
 
 
