@@ -3,6 +3,38 @@
 namespace libcohog
 {
 
+model* train_liblinear(const std::vector<std::vector<feature_node> >& positive_features, const std::vector<std::vector<feature_node> >& negative_features, int dim, parameter param)
+{
+    std::vector<double> responses(positive_features.size() + negative_features.size());
+    std::fill(responses.begin(), responses.begin() + positive_features.size(), 1);
+    std::fill(responses.begin() + positive_features.size(), responses.end(),  -1);
+
+    //liblinear問題構築
+    problem prob;
+    prob.n = dim;               //次元数
+    prob.y = responses.data();  //ラベル配列
+    prob.l = responses.size();  //学習データ数
+    prob.bias = 0;
+
+    std::vector<feature_node*> features_ptr;
+    for(int i = 0; i < positive_features.size(); ++i) features_ptr.push_back(const_cast<feature_node*>(positive_features[i].data()));
+    for(int i = 0; i < negative_features.size(); ++i) features_ptr.push_back(const_cast<feature_node*>(negative_features[i].data()));
+    prob.x = features_ptr.data();
+
+    //liblinear学習
+    model *m = train(&prob, &param);
+
+    //識別テスト
+    int cnt = 0;
+    for(int i = 0; i < features_ptr.size(); ++i)
+        if(predict(m, features_ptr[i]) != prob.y[i])
+            ++cnt;
+    std::cerr << "misses:" << cnt << " (" << (100 * cnt / responses.size()) << "%)" << std::endl;
+
+    return m;
+}
+
+
 model* train_liblinear(const std::vector<std::vector<float> >& positive_features, const std::vector<std::vector<float> >& negative_features, parameter param)
 {
     const int dim = positive_features[0].size();
