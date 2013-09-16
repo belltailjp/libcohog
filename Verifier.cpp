@@ -60,6 +60,8 @@ double libcohog::EvaluationResult::F_value() const
 {
     const double prc = Precision();
     const double rec = Recall();
+    if(prc == 0 && rec == 0)
+        return 0;
 
     return 2 * prc * rec / (rec + prc);
 }
@@ -76,11 +78,15 @@ double libcohog::EvaluationResult::FPPW() const
 
 double libcohog::EvaluationResult::Recall() const
 {
+    if(nTP == 0)
+        return 0;
     return 1.0 * nTP / (nTP + nFN);
 }
 
 double libcohog::EvaluationResult::Precision() const
 {
+    if(nTP == 0)
+        return 0;
     return 1.0 * nTP / (nTP + nFP);
 }
 
