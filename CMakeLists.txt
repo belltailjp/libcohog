@@ -47,11 +47,6 @@ else()
     add_library(cohog ${SOURCES})
 endif()
 
-#DEMO
-add_executable(demo Demo.cpp)
-target_link_libraries(demo cohog)
-target_link_libraries(demo opencv_core opencv_highgui opencv_imgproc opencv_objdetect opencv_gpu)
-
 
 #Test
 add_executable(libcohog_test test_Verifier.cpp)
