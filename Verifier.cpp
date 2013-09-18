@@ -73,7 +73,7 @@ double libcohog::EvaluationResult::FPPF() const
 
 double libcohog::EvaluationResult::FPPW() const
 {
-    return 1.0 * nFPW / nWnd;
+    return 1.0 * nFP / nWnd;
 }
 
 double libcohog::EvaluationResult::Recall() const
