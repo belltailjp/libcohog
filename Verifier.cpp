@@ -144,60 +144,32 @@ bool libcohog::is_equivalent(const cv::Rect& r1, const cv::Rect& r2, double over
     return overwrap_th <= 1.0 * and_area / or_area;
 }
 
+class FilterAll
+{
+public:
+    bool operator()(const cv::Rect& r)
+    {
+        static_cast<void>(r);
+        return true;
+    }
+};
+
 libcohog::VerificationResult libcohog::verify(const libcohog::DetectionResult& detection, const std::vector<libcohog::TruthRect>& truth, 
                                     double threshold, double overwrap_th, int groupTh, double eps)
 {
-    libcohog::VerificationResult result;
-
-    result.total_windows    = detection.window_cnt;
-    result.windows          = libcohog::thresholding(detection.windows, threshold);
-    result.windows_grouped  = libcohog::grouping(result.windows, groupTh, eps);
-    result.ground_truth     = truth;
-
-    result.TP_flags         = std::vector<bool>(result.windows.size(),          false);
-    result.TP_grouped_flags = std::vector<bool>(result.windows_grouped.size(),  false);
-    result.found_flags      = std::vector<bool>(result.ground_truth.size(),     false);
-
-    // Evaluation of non-grouped detection windows
-    for(int i = 0; i < result.windows.size(); ++i)
-    {
-        const cv::Rect& r = result.windows[i];
-        for(int j = 0; j < result.ground_truth.size(); ++j)
-        {
-            if(libcohog::is_equivalent(result.ground_truth[j].rect, r, overwrap_th))
-            {
-                result.TP_flags[i] = true;
-                break;
-            }
-        }
-    }
-
-    // Evaluation of grouped detection windows
-    for(int i = 0; i < result.windows_grouped.size(); ++i)
-    {
-        const cv::Rect& r = result.windows_grouped[i];
-        for(int j = 0; j < result.ground_truth.size(); ++j)
-        {
-            if(!result.found_flags[j] && libcohog::is_equivalent(libcohog::normalize_rectangle(result.ground_truth[j].rect, 2, 0.8), r, overwrap_th))
-            {
-                // Mark this rectangle in the ground truth as detected correctly.
-                result.found_flags[j] = true;
-
-                // Mark this rectangle in the detection result as true positive
-                result.TP_grouped_flags[i] = true;
-
-                break;
-            }
-        }
-    }
-
-    return result;
+    return libcohog::verify(detection, truth, threshold, overwrap_th, groupTh, eps, FilterAll());
 }
 
 libcohog::EvaluationResult libcohog::evaluate(const libcohog::DetectionResult& detection, const std::vector<libcohog::TruthRect>& truth, 
                                             double threshold, double overwrap_th, int groupTh, double eps)
 {
+    return libcohog::evaluate(detection, truth, threshold, overwrap_th, groupTh, eps, FilterAll());
+}
+
+/*
+{
     const VerificationResult result = libcohog::verify(detection, truth, threshold, overwrap_th, groupTh, eps);
     return result.to_eval();
 }
+*/
 
