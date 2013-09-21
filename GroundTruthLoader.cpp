@@ -114,6 +114,8 @@ std::map<std::string, std::vector<libcohog::TruthRect> > libcohog::load_rectan_g
 
             if(rect.rect.height <= min_h || category.find(categ) == category.end())
                 rect.confident = false;
+            else
+                rect.confident = true;
 
             rects.push_back(rect);
         }
