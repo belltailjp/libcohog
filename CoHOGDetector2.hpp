@@ -23,6 +23,8 @@ class CoHOGDetector2: public Detector
     cv::Mat_<unsigned char> calc_cooccurrence_matrix(const cv::Mat_<unsigned char>& gradient, int dx, int dy) const;
     std::vector<cv::Mat_<unsigned char> > calc_cooccurrence_matrices(const cv::Mat_<unsigned char>& gradient) const;
 
+    void calc_feature(const cv::Mat_<unsigned char>& img, std::vector<unsigned char>& feature, int bx, int by, int w, int h) const;
+
 public:
 
     CoHOGDetector2(int image_width, int image_height, const CoHOGParams& _param_cohog = CoHOGParams(), const ScanParams& _param_scan = ScanParams())

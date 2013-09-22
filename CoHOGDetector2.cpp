@@ -93,12 +93,38 @@ std::vector<cv::Mat_<unsigned char> > CoHOGDetector2::calc_cooccurrence_matrices
     return matrices;
 }
 
+
+void CoHOGDetector2::calc_feature(const cv::Mat_<unsigned char>& img, std::vector<unsigned char>& feature, int bx, int by, int w, int h) const
+{
+    
+}
+
+
+
 std::vector<Window> CoHOGDetector2::detect(const cv::Mat_<unsigned char>& img)
 {
     assert(img.cols == width && img.rows == height);
 
     const cv::Mat_<unsigned char> orientation                   = calc_gradient_orientation_matrix(img, param_cohog.BinCount, param_cohog.MinGradient);
     const std::vector<cv::Mat_<unsigned char> > occur_matrices  = calc_cooccurrence_matrices(orientation);
+
+    std::vector<unsigned char> feature(dim);
+
+#ifdef WITH_OMP
+    #pragma omp parallel for
+#endif
+    for(int y = 0; y < h - h_window; y += param_scan.SkipSizeY)
+    {
+        for(int x = 0; x < w - w_window; x += param_scan.SkipSizeX)
+        {
+
+#ifdef WITH_OMP
+            #pragma omp critical
+#endif
+            {
+            }
+        }
+    }
 
     return std::vector<Window>();
 }
