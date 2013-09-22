@@ -43,7 +43,7 @@ int CoHOGDetector::quantitize_gradient(int level, float th, int dx, int dy) cons
 
 cv::Mat_<unsigned char> CoHOGDetector::calc_gradient_orientation_matrix(const cv::Mat_<unsigned char>& image, unsigned level, float th) const
 {
-    cv::Mat_<unsigned char> result = cv::Mat_<unsigned char>::zeros(image.size());
+    cv::Mat_<unsigned char> result = cv::Mat_<unsigned char>::zeros(image.size()) + 0xff;
     const unsigned w = image.cols;
     const unsigned h = image.rows;
 
