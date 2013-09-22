@@ -14,7 +14,7 @@ set(HEADERS_SUB ${HEADERS_SUB} CoHOGParams.hpp Detector.hpp HOGDetector.hpp CoHO
 set(HEADERS_LIBLINEAR ${HEADERS_LIBLINEAR} liblinear/linear.h)
 
 #SOURCES
-set(SOURCES ${SOURCES} Detector.cpp HOGDetector.cpp CoHOGDetector.cpp Trainer.cpp Verifier.cpp GroundTruthLoader.cpp)
+set(SOURCES ${SOURCES} Detector.cpp HOGDetector.cpp CoHOGDetector.cpp Trainer.cpp Verifier.cpp GroundTruthLoader.cpp CoHOGDetector2.cpp)
 set(SOURCES ${SOURCES} tinyxml2.cpp)
 set(SOURCES ${SOURCES} liblinear/linear.cpp liblinear/tron.cpp liblinear/predict.c liblinear/train.c 
                         liblinear/blas/daxpy.c liblinear/blas/ddot.c liblinear/blas/dnrm2.c liblinear/blas/dscal.c)
@@ -49,7 +49,7 @@ endif()
 
 
 #Test
-add_executable(libcohog_test test_Verifier.cpp)
+add_executable(libcohog_test test_Verifier.cpp test_CoHOGDetector2.cpp)
 target_link_libraries(libcohog_test gtest_main)
 target_link_libraries(libcohog_test cohog)
 target_link_libraries(libcohog_test pthread)
