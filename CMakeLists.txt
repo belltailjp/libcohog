@@ -14,12 +14,14 @@ set(HEADERS_SUB ${HEADERS_SUB} CoHOGParams.hpp Detector.hpp HOGDetector.hpp CoHO
 set(HEADERS_LIBLINEAR ${HEADERS_LIBLINEAR} liblinear/linear.h)
 
 #SOURCES
-set(SOURCES ${SOURCES} Detector.cpp HOGDetector.cpp CoHOGDetector.cpp Trainer.cpp Verifier.cpp GroundTruthLoader.cpp CoHOGDetector2.cpp)
+set(SOURCES ${SOURCES} Detector.cpp HOGDetector.cpp CoHOGDetector.cpp Trainer.cpp Verifier.cpp GroundTruthLoader.cpp)
 set(SOURCES ${SOURCES} tinyxml2.cpp)
 set(SOURCES ${SOURCES} liblinear/linear.cpp liblinear/tron.cpp liblinear/predict.c liblinear/train.c 
                         liblinear/blas/daxpy.c liblinear/blas/ddot.c liblinear/blas/dnrm2.c liblinear/blas/dscal.c)
+set(CUDA_SOURCES ${CUDA_SOURCES} CoHOGDetectorCUDA.cu)
 
-set(CUDA_SOURCES "")
+set(TEST_SOURCES        test_Verifier.cpp test_GroundTruthLoader.cpp)
+set(CUDA_TEST_SOURCES   test_CoHOGDetector.cu)
 
 #DEBUG
 if(DEBUG)
@@ -39,17 +41,20 @@ endif()
 
 #CUDA
 if(WITH_CUDA)
-    set(CUDA_NVCC_FLAGS -arch=sm_20 -O2)
+    list(APPEND CUDA_NVCC_FLAGS -arch=sm_20)
+    list(APPEND CUDA_NVCC_FLAGS -O2)
+    list(APPEND CUDA_NVCC_FLAGS -ccbin g++-4.4)
     add_definitions(-DWITH_CUDA)
     find_package(CUDA)
     cuda_add_library(cohog ${SOURCES} ${CUDA_SOURCES})
+    set(TEST_SOURCES ${TEST_SOURCES} ${CUDA_TEST_SOURCES})
+    cuda_add_executable(libcohog_test ${TEST_SOURCES})
 else()
     add_library(cohog ${SOURCES})
+    add_executable(libcohog_test ${TEST_SOURCES})
 endif()
 
-
 #Test
-add_executable(libcohog_test test_Verifier.cpp test_CoHOGDetector2.cpp)
 target_link_libraries(libcohog_test gtest_main)
 target_link_libraries(libcohog_test cohog)
 target_link_libraries(libcohog_test pthread)
