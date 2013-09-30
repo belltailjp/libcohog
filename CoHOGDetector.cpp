@@ -51,8 +51,10 @@ cv::Mat_<unsigned char> CoHOGDetector::calc_gradient_orientation_matrix(const cv
     {
         for(unsigned x = 1; x < w - 1; ++x)
         {
-            const int dx = image(y + 1, x + 1) + image(y, x + 1) + image(y - 1, x + 1) - image(y, x - 1) - image(y + 1, x - 1) - image(y - 1, x - 1);
-            const int dy = image(y + 1, x - 1) + image(y + 1, x) + image(y + 1, x + 1) - image(y - 1, x) - image(y - 1, x + 1) - image(y - 1, x - 1);
+            //const int dx = image(y + 1, x + 1) + image(y, x + 1) + image(y - 1, x + 1) - image(y, x - 1) - image(y + 1, x - 1) - image(y - 1, x - 1);
+            //const int dy = image(y + 1, x - 1) + image(y + 1, x) + image(y + 1, x + 1) - image(y - 1, x) - image(y - 1, x + 1) - image(y - 1, x - 1);
+            const int dx = image(y, x + 1) - image(y, x - 1);
+            const int dy = image(y + 1, x) - image(y - 1, x);
             result(y, x) = quantitize_gradient(level, th, dx, dy);
         }
     }
