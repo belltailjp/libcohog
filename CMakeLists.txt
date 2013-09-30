@@ -20,7 +20,7 @@ set(SOURCES ${SOURCES} liblinear/linear.cpp liblinear/tron.cpp liblinear/predict
                         liblinear/blas/daxpy.c liblinear/blas/ddot.c liblinear/blas/dnrm2.c liblinear/blas/dscal.c)
 set(CUDA_SOURCES ${CUDA_SOURCES} CoHOGDetectorCUDA.cu)
 
-set(TEST_SOURCES        test_Verifier.cpp test_GroundTruthLoader.cpp)
+set(TEST_SOURCES        test_Verifier.cpp)
 set(CUDA_TEST_SOURCES   test_CoHOGDetector.cu)
 
 #DEBUG
