@@ -20,8 +20,8 @@ set(SOURCES ${SOURCES} liblinear/linear.cpp liblinear/tron.cpp liblinear/predict
                         liblinear/blas/daxpy.c liblinear/blas/ddot.c liblinear/blas/dnrm2.c liblinear/blas/dscal.c)
 set(CUDA_SOURCES ${CUDA_SOURCES} CoHOGDetectorCUDA.cu)
 
-set(TEST_SOURCES        test_Verifier.cpp test_CoHOGDetector.cpp)
-#set(CUDA_TEST_SOURCES   test_CoHOGDetector.cu)
+set(TEST_SOURCES        test_Verifier.cpp)
+set(CUDA_TEST_SOURCES   test_CoHOGDetectorCUDA.cpp)
 
 #DEBUG
 if(DEBUG)
@@ -48,7 +48,7 @@ if(WITH_CUDA)
     find_package(CUDA)
     cuda_add_library(cohog ${SOURCES} ${CUDA_SOURCES})
     set(TEST_SOURCES ${TEST_SOURCES} ${CUDA_TEST_SOURCES})
-    cuda_add_executable(libcohog_test ${TEST_SOURCES})
+    cuda_add_executable(libcohog_test ${TEST_SOURCES} ${CUDA_TEST_SOURCES})
 else()
     add_library(cohog ${SOURCES})
     add_executable(libcohog_test ${TEST_SOURCES})
