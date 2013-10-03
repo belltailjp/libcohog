@@ -3,6 +3,18 @@
 namespace libcohog
 {
 
+parameter default_liblinear_parameter()
+{
+    parameter par;
+    par.solver_type  = L2R_L2LOSS_SVC_DUAL;
+    par.eps          = 0.1;
+    par.C            = 1;
+    par.nr_weight    = 0;
+    par.weight_label = NULL;
+    par.weight       = NULL;
+    return par;
+}
+
 model* train_liblinear(const std::vector<std::vector<feature_node> >& positive_features, const std::vector<std::vector<feature_node> >& negative_features, int dim, parameter param)
 {
     std::vector<double> responses(positive_features.size() + negative_features.size());
